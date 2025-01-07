@@ -8,32 +8,68 @@ output:
 ---
 
 
+``` r
+head(cars)
+```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```
+##   speed dist
+## 1     4    2
+## 2     4   10
+## 3     7    4
+## 4     7   22
+## 5     8   16
+## 6     9   10
+```
 
 
 ``` r
-summary(cars)
+aov1 <- aov(dist ~ speed, data = cars)
+summary(aov1)
 ```
 
 ```
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
+##             Df Sum Sq Mean Sq F value   Pr(>F)    
+## speed        1  21185   21185   89.57 1.49e-12 ***
+## Residuals   48  11354     237                     
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+``` r
+agricolae::LSD.test(aov1, "speed")$groups
+```
 
-![](HelloWorld_files/figure-html/pressure-1.png)<!-- -->
+```
+##        dist groups
+## 24 93.75000      a
+## 25 85.00000     ab
+## 22 66.00000    abc
+## 18 64.50000     bc
+## 23 54.00000    bcd
+## 14 50.50000    bcd
+## 20 50.40000     cd
+## 19 50.00000     cd
+## 17 40.66667    cde
+## 16 36.00000   cdef
+## 13 35.00000   cdef
+## 15 33.33333   cdef
+## 10 26.00000    def
+## 11 22.50000    def
+## 12 21.50000    def
+## 8  16.00000    def
+## 7  13.00000     ef
+## 9  10.00000     ef
+## 4   6.00000      f
+```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+``` r
+library(ggplot2)
+ggplot(data = cars, aes(x = speed, y = dist)) +
+  geom_point()
+```
+
+![](HelloWorld_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
